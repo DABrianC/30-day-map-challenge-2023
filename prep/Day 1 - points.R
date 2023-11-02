@@ -19,6 +19,9 @@ tracts <- tracts_sf |>
             , by = join_by("geoid10" == "GEOID"))
 
 
+wards <- st_read("https://data.cityofchicago.org/api/geospatial/sp34-6z76?method=export&format=GeoJSON"
+                 , drivers= "geojson")
+
 #get data for all the restaurants in the chicago bounding box
 restaurants <- bb |>
   opq()|>
@@ -35,17 +38,53 @@ rests <- st_intersection(restaurants$osm_points, tracts)
 rests <- rests |>
   select(osm_id, name, alcohol, amenity, craft, cuisine, description)
 
-rests_tracts <- st_join(tracts, rests)
+wards_rests <- st_join(wards, rests) 
 
-rests_tracts1 <- rests_tracts |>
-  group_by()
-                    
-showtext.auto()
-font_add_google("Schoolbell", "bell")
-
-ggplot(tracts) +
+wards_rests1 <- wards_rests |>
+  group_by(ward) |>
+  count() |>
+  ungroup() |>
+  arrange(desc(n)) |>
+  mutate(percent = (n/sum(n))*100)
+  
+  
+ggplot(wards) +
   geom_sf() +
-  geom_sf(data = rests, size = .3) +
-  labs(title = "Chicago")+
+  geom_sf(data = wards_rests1, aes(fill = case_when(percent > 4 ~ "blue"
+                                                    , TRUE ~ NA))) +
+    geom_sf(data = rests, size = .1
+            , color = "white") +
+  theme_void()
+
+font_add(family = "Playpen Sans"
+         , regular = "C:\\Windows\\Fonts\\PlaypenSans.tff")
+
+font_add(family = "Roboto", regular = "C:\\Windows\\Fonts\\Roboto.tff")
+
+font_add(family = "Playpen Sans"
+         , regular = "C:\\Windows\\Fonts\\PlaypenSans-Regular.ttf")
+
+font_add_google("Roboto")                    
+showtext.auto()
+
+ggplot(wards) +
+  geom_sf() +
+  geom_sf_text(aes(label = ward))
+
+ggplot(wards_rests1) +
+  geom_sf(fill = "black"
+          , color = "white") +
+  ggfx::with_outer_glow(
+    geom_sf(data = st_jitter(rests), size = .2
+          , color = "yellow")) +
+  labs(title = "Restaurants of Chicago"
+       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap \nare located in only 8 wards.")+
   theme_void() +
-  theme(title = element_text(family = "Schoolbell"))
+  theme(plot.background = element_rect(fill = "grey")
+        , plot.title.position = "plot"
+        #, plot.subtitle.position = "plot"
+        , title = element_text(family = "Playpen Sans"
+                             , size = 32)
+        , plot.subtitle = element_text(family = "Playpen Sans"
+                                  , size = 24
+                                  , color = "yellow"))
