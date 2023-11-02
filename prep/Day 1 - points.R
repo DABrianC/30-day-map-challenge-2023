@@ -78,13 +78,18 @@ ggplot(wards_rests1) +
     geom_sf(data = st_jitter(rests), size = .2
           , color = "yellow")) +
   labs(title = "Restaurants of Chicago"
-       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap \nare located in only 8 wards.")+
+       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap \nare located in only 8 wards."
+       , caption = "bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats")+
   theme_void() +
-  theme(plot.background = element_rect(fill = "grey")
+  theme(plot.background = element_rect(fill = "lightgrey")
         , plot.title.position = "plot"
         #, plot.subtitle.position = "plot"
         , title = element_text(family = "Playpen Sans"
                              , size = 32)
         , plot.subtitle = element_text(family = "Playpen Sans"
                                   , size = 24
-                                  , color = "yellow"))
+                                  , color = "yellow")
+        , plot.caption = element_text(size = 12
+                                       , color = "black"))
+
+ggsave("Chicago restaurants")
