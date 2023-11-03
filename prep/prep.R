@@ -5,7 +5,8 @@
 packages <- c("crsuggest", "elevatr", "extrafont", "extrafontdb", "fastDummies","ggfx", "ggtext", "glue"
               , "here", "janitor", "leaflet", "leaflet.extras", "lubridate", "magick"
               , "mapview","nationalparkcolors", "osmdata", "patchwork", "rayimage", "rayrender", "rayshader"
-              , "rcartocolor", "readxl", "rnaturalearth", "rnaturalearthdata", "sf", "showtext", "tanaka", "terra",  "tidyverse", "tmap"
+              , "rcartocolor", "readxl", "rnaturalearth", "rnaturalearthdata", "sf", "showtext", "tanaka", "terra"
+              , "tidycensus",  "tidyverse", "tmap"
               , "tmaptools", "viridis", "viridisLite")
 
 # Install packages not yet installed
@@ -17,3 +18,9 @@ if (any(installed_packages == FALSE)) {
 lapply(packages, library, character.only = TRUE) |>
   invisible()
 
+
+#Add some Google Fonts
+font_add(family = "Roboto", regular = "C:\\Windows\\Fonts\\Roboto.tff")
+
+font_add(family = "Playpen Sans"
+         , regular = "C:\\Windows\\Fonts\\PlaypenSans-Regular.ttf")
