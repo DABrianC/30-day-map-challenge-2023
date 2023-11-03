@@ -4,7 +4,7 @@
 #load libraries
 packages <- c("crsuggest", "elevatr", "extrafont", "extrafontdb", "fastDummies","ggfx", "ggtext", "glue"
               , "here", "janitor", "leaflet", "leaflet.extras", "lubridate", "magick"
-              , "mapview","nationalparkcolors", "osmdata", "patchwork", "rayimage", "rayrender", "rayshader"
+              , "mapview","nationalparkcolors", "osmdata", "paletteer", "patchwork", "rayimage", "rayrender", "rayshader"
               , "rcartocolor", "readxl", "rnaturalearth", "rnaturalearthdata", "sf", "showtext", "tanaka", "terra"
               , "tidycensus",  "tidyverse", "tmap"
               , "tmaptools", "viridis", "viridisLite")
@@ -20,7 +20,7 @@ lapply(packages, library, character.only = TRUE) |>
 
 
 #Add some Google Fonts
-font_add(family = "Roboto", regular = "C:\\Windows\\Fonts\\Roboto.tff")
+font_add(family = "Roboto", regular = "C:\\Windows\\Fonts\\Roboto-Regular.tff")
 
 font_add(family = "Playpen Sans"
          , regular = "C:\\Windows\\Fonts\\PlaypenSans-Regular.ttf")
