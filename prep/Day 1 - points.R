@@ -72,24 +72,33 @@ ggplot(wards) +
   geom_sf_text(aes(label = ward))
 
 ggplot(wards_rests1) +
-  geom_sf(fill = "black"
-          , color = "white") +
+  geom_sf(fill = "#FFFFFF"
+          , color = "#B3DDF2") +
   ggfx::with_outer_glow(
     geom_sf(data = st_jitter(rests), size = .2
-          , color = "yellow")) +
+          , color = "#FF0000")) +
   labs(title = "Restaurants of Chicago"
-       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap \nare located in only 8 wards."
-       , caption = "bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats")+
+       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap
+       are located in only 8 wards."
+       , caption = "bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats\nDay 1: 30 Day Map Challenge 2023")+
   theme_void() +
-  theme(plot.background = element_rect(fill = "lightgrey")
-        , plot.title.position = "plot"
+  theme(#plot.background = element_rect(fill = "#B3DDF2")
+         plot.title.position = "plot"
         #, plot.subtitle.position = "plot"
         , title = element_text(family = "Playpen Sans"
-                             , size = 32)
+                             , size = 32
+                             , color = "#FF0000")
         , plot.subtitle = element_text(family = "Playpen Sans"
                                   , size = 24
-                                  , color = "yellow")
+                                  , color = "#FF0000")
         , plot.caption = element_text(size = 12
                                        , color = "black"))
 
-ggsave("Chicago restaurants")
+ggsave(plot = last_plot()
+       , filename = "Chicago restaurants.png"
+       , path = "./Day 1 - points"
+       , device = "png"
+       , width = 4
+       , height = 6
+       , units = "in"
+       , bg = "#B3DDF2")
