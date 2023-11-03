@@ -56,4 +56,6 @@ ggplot(wards) +
           , aes(color = ward)
           , alpha = .3
           , size = .5) +
-  scale_color_manual(values = paletteer_c("grDevices::Plasma", 50))
+  scale_color_manual(values = paletteer_c("grDevices::Plasma", 50)) +
+  theme_void() +
+  theme(legend.position = "none")
