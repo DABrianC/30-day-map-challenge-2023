@@ -48,14 +48,41 @@ st_crs(all_lines) <- st_crs(wards)
 rests_wards <- st_join(rests, wards)
 
 ggplot(wards) +
-  geom_sf() +
+  geom_sf(alpha = .8
+          , color = NA) +
     geom_sf(data = all_lines
-          , color = "grey"
-          , linewidth = .5) +
-  geom_sf(data = rests_wards
+          , color = "black"
+          , linewidth = .5
+          , alpha = .3) +
+  geom_sf(data = st_jitter(rests_wards)
           , aes(color = ward)
           , alpha = .3
           , size = .5) +
-  scale_color_manual(values = paletteer_c("grDevices::Plasma", 50)) +
+  labs(title = "Restaurants of Chicago"
+       , subtitle = "What path would a bird take to all the restaurants in Chicago?"
+       , caption = "@bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats  \nDay 1: 30 Day Map Challenge 2023  ")+
+    scale_color_manual(values = paletteer_c("grDevices::Plasma", 50)) +
   theme_void() +
-  theme(legend.position = "none")
+  theme(legend.position = "none"
+        , plot.title.position = "plot"
+        , title = element_text(family = "Playpen Sans"
+                       , size = 32
+                       , color = "#FF0000")
+        , plot.subtitle = element_text(family = "Playpen Sans"
+                               , size = 24
+                               , color = "#FF0000"
+                               , lineheight = .5)
+        , plot.caption = element_text(size = 12
+                              , color = "black"
+                              , lineheight = .5))
+
+#save the plot
+ggsave(plot = last_plot()
+       , filename = "line through all restaurants.png"
+       , path = "./Day 2 - lines"
+       , device = "png"
+       , width = 4
+       , height = 6
+       , units = "in"
+       , bg = "#B3DDF2")
+
