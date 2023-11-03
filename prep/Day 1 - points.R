@@ -79,7 +79,7 @@ ggplot(wards_rests1) +
           , color = "#FF0000")) +
   labs(title = "Restaurants of Chicago"
        , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap\nare located in only 8 wards."
-       , caption = "bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats\nDay 1: 30 Day Map Challenge 2023")+
+       , caption = "bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats  \nDay 1: 30 Day Map Challenge 2023  ")+
   theme_void() +
   theme(#plot.background = element_rect(fill = "#B3DDF2")
          plot.title.position = "plot"
@@ -89,7 +89,8 @@ ggplot(wards_rests1) +
                              , color = "#FF0000")
         , plot.subtitle = element_text(family = "Playpen Sans"
                                   , size = 24
-                                  , color = "#FF0000")
+                                  , color = "#FF0000"
+                                  , lineheight = .5)
         , plot.caption = element_text(size = 12
                                        , color = "black"))
 
