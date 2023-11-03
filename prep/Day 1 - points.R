@@ -78,8 +78,7 @@ ggplot(wards_rests1) +
     geom_sf(data = st_jitter(rests), size = .2
           , color = "#FF0000")) +
   labs(title = "Restaurants of Chicago"
-       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap
-       are located in only 8 wards."
+       , subtitle = "Half of 4,001 restaurants listed on OpenStreetMap\nare located in only 8 wards."
        , caption = "bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats\nDay 1: 30 Day Map Challenge 2023")+
   theme_void() +
   theme(#plot.background = element_rect(fill = "#B3DDF2")
