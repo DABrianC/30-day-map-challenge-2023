@@ -11,4 +11,4 @@ A fun repository of maps I created for the 2023 version of the [30 Day Map Chall
 <img src="https://github.com/DABrianC/30-day-map-challenge-2023/blob/main/Day%203%20-%20polygons/restaurants%20voronoi.png" width = "50%" height = "50%"/>
 
 **Day 7**<br>
-<img src="" width = "50%" height = "50%"/>
+<img src="https://github.com/DABrianC/30-day-map-challenge-2023/blob/main/Day%207%20-%20navigation/great%20lakes%20shipping.png" width = "50%" height = "50%"/>
