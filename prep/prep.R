@@ -18,6 +18,9 @@ if (any(installed_packages == FALSE)) {
 lapply(packages, library, character.only = TRUE) |>
   invisible()
 
+#gganimate
+# install.packages('devtools')
+#devtools::install_github('thomasp85/gganimate')
 
 #Add some Google Fonts
 #font_add(family = "Roboto", regular = "C:\\Windows\\Fonts\\Roboto-Regular.tff")

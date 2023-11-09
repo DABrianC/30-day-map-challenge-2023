@@ -4,17 +4,10 @@ source(here::here("./prep/prep.R"))
 df <- read_csv("./Day 7 - navigation/shipdata.csv") |>
   select(1:7)
 
-df <- df[1:200000,]
+df <- df[1:400000,]
 
 
 #land data
-
-lands <- c("United States of America", "Canada")
-type = c("Country", "Sovereign country")
-
-land <- st_read("./Day 7 - navigation/ne_10m_admin_0_countries.shp") |>
-  filter(SOVEREIGNT %in% lands) |>
-  filter(TYPE %in% type)
 
 #lake boundary data
 names <- c("Lake Michigan", "Lake Ontario", "Lake Huron"
@@ -34,24 +27,75 @@ df1 <- df |>
            , crs = 4326)
 
 #set the CRS's to the same
-st_crs(lakes) <- st_crs(df1)
-st_crs(land) <- st_crs(df1)
-
+lakes <- st_transform(lakes, crs = st_crs(df1))
+land <- st_transform(land, crs = st_crs(df1))
 
 land <- st_crop(land, st_bbox(lakes))
 df1 <- st_crop(df1, st_bbox(lakes))
 
-df2 <- st_join(df1, lakes)
+#
+df1$BaseDateTime <- ymd_hms(df1$BaseDateTime)
+
+
 #plot it
-ggplot() +
-  geom_sf(data = land, fill = "black"
+plot <- ggplot() +
+  geom_sf(data = land, fill = "grey"
           , color = "white") +
-  #geom_sf(data = rivers_crop, fill = "darkblue")+
-  with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
+  
+  ggfx::with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
           , color = "darkblue")) +
-  with_outer_glow(geom_sf(data = st_jitter(df2, .05) 
-          , color = "yellow"
+  ggfx::with_outer_glow(geom_sf(data = st_jitter(df1_filt, .05) 
+          , color = "#FF007F"
           , size = .1
           , alpha = .3)) +
   theme_void() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") 
+
+plot
+
+df3 <- df1 |>
+  mutate(date = as_date(BaseDateTime))
+        
+
+#
+ggplot() +
+  geom_sf(data = land, fill = "grey"
+          , color = "white") +
+  
+  ggfx::with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
+                                , color = "darkblue")) +
+  ggfx::with_outer_glow(geom_sf(data = st_jitter(df3, .05) 
+                                , color = "yellow"
+                                , size = .1
+                                , alpha = .3)) +
+  theme_void() +
+  theme(legend.position = "none") +
+  gganimate::transition_time(df3$date) #animate it
+
+get_map <- function(y) {
+  df3 |> filter(date == y) %>% 
+    ggplot() + 
+    geom_sf(data = land, fill = "grey"
+            , color = "white") +
+    ggfx::with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
+                                  , color = "darkblue")) +
+    ggfx::with_outer_glow(geom_sf(data = st_jitter(df3, .05) 
+                                  , color = "yellow"
+                                  , size = .1
+                                  , alpha = .3)) +
+    theme_void() +
+    theme(legend.position = "none") + 
+    labs(title = y) 
+}
+
+y_list <- df3$date |> 
+  sort |> 
+  unique
+my_maps <- paste0("~./Day 7 - navigation/", seq_along(y_list), ".png")
+for (i in seq_along(y_list)){
+  get_map(y = y_list[i])
+  ggsave(my_maps[i], width = 6, height = 4)
+}
+
+magick::image_animate(my_maps, fps = 1)
+
