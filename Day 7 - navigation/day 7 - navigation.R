@@ -28,74 +28,49 @@ df1 <- df |>
 
 #set the CRS's to the same
 lakes <- st_transform(lakes, crs = st_crs(df1))
-land <- st_transform(land, crs = st_crs(df1))
 
-land <- st_crop(land, st_bbox(lakes))
 df1 <- st_crop(df1, st_bbox(lakes))
 
-#
-df1$BaseDateTime <- ymd_hms(df1$BaseDateTime)
+#I had visions of animating this, but I keep getting an error
+# with the crs when using gganimate
+#df1$BaseDateTime <- ymd_hms(df1$BaseDateTime)
+#df2 <- df1 |>
+#  mutate(date = as_date(BaseDateTime))
 
+font_add_google("Monoton", "Monoton")
+showtext.auto()
 
 #plot it
 plot <- ggplot() +
-  geom_sf(data = land, fill = "grey"
-          , color = "white") +
-  
   ggfx::with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
           , color = "darkblue")) +
-  ggfx::with_outer_glow(geom_sf(data = st_jitter(df1_filt, .05) 
+  ggfx::with_outer_glow(geom_sf(data = st_jitter(df1, .05) 
           , color = "#FF007F"
           , size = .1
           , alpha = .3)) +
+  labs(title = "Great Lakes Boat Traffic"
+       , subtitle = "Chicago restaurants probably get some of their food\nthis way."
+       , caption = "@bcalhoon7 | data: NOAA marine cadastre, naturalearth  | made with rstats  \nDay 7: 30 Day Map Challenge 2023  ")+
   theme_void() +
-  theme(legend.position = "none") 
+  theme(legend.position = "none"
+        , plot.title.position = "plot"
+        , title = element_text(family = "Monoton"
+                               , size = 32
+                               , color = "#FF007F")
+        , plot.subtitle = element_text(family = "Monoton"
+                                       , size = 24
+                                       , color = "#FF007F"
+                                       , lineheight = .5)
+        , plot.caption = element_text(size = 14
+                                      , color = "black"
+                                      , lineheight = .5))
 
-plot
 
-df3 <- df1 |>
-  mutate(date = as_date(BaseDateTime))
-        
-
-#
-ggplot() +
-  geom_sf(data = land, fill = "grey"
-          , color = "white") +
-  
-  ggfx::with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
-                                , color = "darkblue")) +
-  ggfx::with_outer_glow(geom_sf(data = st_jitter(df3, .05) 
-                                , color = "yellow"
-                                , size = .1
-                                , alpha = .3)) +
-  theme_void() +
-  theme(legend.position = "none") +
-  gganimate::transition_time(df3$date) #animate it
-
-get_map <- function(y) {
-  df3 |> filter(date == y) %>% 
-    ggplot() + 
-    geom_sf(data = land, fill = "grey"
-            , color = "white") +
-    ggfx::with_outer_glow(geom_sf(data = lakes, fill = "darkblue"
-                                  , color = "darkblue")) +
-    ggfx::with_outer_glow(geom_sf(data = st_jitter(df3, .05) 
-                                  , color = "yellow"
-                                  , size = .1
-                                  , alpha = .3)) +
-    theme_void() +
-    theme(legend.position = "none") + 
-    labs(title = y) 
-}
-
-y_list <- df3$date |> 
-  sort |> 
-  unique
-my_maps <- paste0("~./Day 7 - navigation/", seq_along(y_list), ".png")
-for (i in seq_along(y_list)){
-  get_map(y = y_list[i])
-  ggsave(my_maps[i], width = 6, height = 4)
-}
-
-magick::image_animate(my_maps, fps = 1)
-
+ggsave(plot = plot
+       , filename = "great lakes shipping.png"
+       , path = "./Day 7 - navigation"
+       , device = "png"
+       , width = 6
+       , height = 4
+       , units = "in"
+       , bg = "grey")
