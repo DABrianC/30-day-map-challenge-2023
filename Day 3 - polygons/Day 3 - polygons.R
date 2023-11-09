@@ -51,7 +51,7 @@ ggplot() +
    #                 , ylim = c(bb[[2]], bb[[4]])))+
   labs(title = "Conceptual Chicago"
        , subtitle = "Voronoi tesselation of restaurant locations"
-       , caption = "@bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats  \nDay 1: 30 Day Map Challenge 2023  ")+
+       , caption = "@bcalhoon7 | data: Chicago Open Data, OpenStreetMap | made with rstats  \nDay 3: 30 Day Map Challenge 2023  ")+
   theme_void() +
   theme(legend.position = "none"
         , plot.title.position = "plot"
